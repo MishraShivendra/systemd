@@ -177,6 +177,7 @@ static DEFINE_CONFIG_PARSE_ENUM(config_parse_coredump_storage, coredump_storage,
 
 static CoredumpStorage arg_storage = COREDUMP_STORAGE_EXTERNAL;
 static bool arg_compress = true;
+static Compression arg_algorithm = COMPRESSION_ZSTD;
 static uint64_t arg_process_size_max = PROCESS_SIZE_MAX;
 static uint64_t arg_external_size_max = EXTERNAL_SIZE_MAX;
 static uint64_t arg_journal_size_max = JOURNAL_SIZE_MAX;
@@ -197,6 +198,7 @@ static int parse_config(void) {
         static const ConfigTableItem items[] = {
                 { "Coredump", "Storage",         config_parse_coredump_storage,    0,                      &arg_storage           },
                 { "Coredump", "Compress",        config_parse_bool,                0,                      &arg_compress          },
+                { "Coredump", "Algorithm",       config_parse_algo,                0,                      &arg_algorithm         },
                 { "Coredump", "ProcessSizeMax",  config_parse_iec_uint64,          0,                      &arg_process_size_max  },
                 { "Coredump", "ExternalSizeMax", config_parse_iec_uint64_infinity, 0,                      &arg_external_size_max },
                 { "Coredump", "JournalSizeMax",  config_parse_iec_size,            0,                      &arg_journal_size_max  },

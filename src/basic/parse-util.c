@@ -20,6 +20,31 @@
 #include "stat-util.h"
 #include "string-util.h"
 #include "strv.h"
+#include "compress.h"
+
+Compression parse_compression_algorithm(const char *v) {
+        if (!v)
+                return COMPRESSION_ZSTD;
+        if (STRCASE_IN_SET(v,
+                        "zst",
+                        ".zst",
+                        "z",
+                        "1"))
+                return COMPRESSION_ZSTD;
+        if (STRCASE_IN_SET(v,
+                        "lz4",
+                        ".lz4",
+                        "l",
+                        "2"))
+                return COMPRESSION_LZ4;
+        if (STRCASE_IN_SET(v,
+                        "xz",
+                        ".xz",
+                        "x",
+                        "3"))
+                return COMPRESSION_XZ;
+        return COMPRESSION_ZSTD;
+}
 
 int parse_boolean(const char *v) {
         if (!v)

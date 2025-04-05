@@ -46,6 +46,7 @@
 #include "syslog-util.h"
 #include "time-util.h"
 #include "utf8.h"
+#include "compress.h"
 
 DEFINE_PRIVATE_HASH_OPS_WITH_VALUE_DESTRUCTOR(config_file_hash_ops_fclose,
                                               char, path_hash_func, path_compare,
@@ -1030,6 +1031,30 @@ int config_parse_bool(
 
         *b = r;
         return 1; /* set */
+}
+
+Compression config_parse_compression_algorithm(
+                                        const char *unit,
+                                        const char *filename,
+                                        unsigned line,
+                                        const char *section,
+                                        unsigned section_line,
+                                        const char *lvalue,
+                                        int ltype,
+                                        const char *rvalue,
+                                        void *data,
+                                        void *userdata) {
+        Compression *b = ASSERT_PTR(data);
+        bool fatal = ltype;
+        Compression r;
+
+        assert(filename);
+        assert(lvalue);
+        assert(rvalue);
+
+        r = parse_boolean(rvalue);
+        *b = r;
+        return r;
 }
 
 int config_parse_uint32_flag(
